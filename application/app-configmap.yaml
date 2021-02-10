@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: trade-configmap
+  namespace: learn
+  labels:
+    app : trade
+data:
+  POSTGRES_DB: postgresdb
+  POSTGRES_DB_USERNAME: postgresadmin
+
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  namespace: learn
+  name: trade-secrets
+  labels:
+    app  : trade
+type: Opaque
+data:
+  POSTGRES_DB_PASSWORD: YWRtaW4xMjM=
+

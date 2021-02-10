@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+ name: learn
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: learn
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: postgresdb
+  POSTGRES_USER: postgresadmin
+
+---
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  namespace: learn
+  name: postgres-secret
+  labels:
+    app  : postgres
+type: Opaque
+data:
+  POSTGRES_PASSWORD: YWRtaW4xMjM=

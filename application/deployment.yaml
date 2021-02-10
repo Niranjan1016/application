@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: learn
+  name: trade-app
+  labels:
+    app: trade-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: trade-app
+  template:
+    metadata:
+      labels:
+        app: trade-app
+    spec:
+      containers:
+      - name: trade-app
+        image: niranjan1016/trade:latest
+        env:
+          - name: POSTGRES_DB_USERNAME
+            valueFrom:
+                configMapKeyRef:
+                  name: trade-configmap
+                  key: POSTGRES_DB_USERNAME
+          - name: POSTGRES_DB
+            valueFrom:
+                configMapKeyRef:
+                  name: trade-configmap
+                  key: POSTGRES_DB
+          - name: POSTGRES_DB_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                  name: trade-secrets
+                  key: POSTGRES_DB_PASSWORD
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 20
+        readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+        ports:
+        - containerPort: 8080
+

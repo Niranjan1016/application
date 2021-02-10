@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+ name: trade-ingress
+ namespace: learn
+ annotations:
+   kubernetes.io/ingress.class: "nginx"
+spec:
+ rules:
+ - http:
+     paths:
+     - backend:
+         serviceName: trade-service
+         servicePort: 8080
+       path: /trade/health
